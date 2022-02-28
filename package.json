@@ -1,0 +1,33 @@
+{
+  "name": "news_website",
+  "version": "1.0.0",
+  "description": "news website course project",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "production": "set NODE_ENV=production&&nodemon index.js",
+    "debug": "nodemon --inspect-brk index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NikolayNikolaev1/news_website_course_project.git"
+  },
+  "author": "Nikolay Nikolaev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NikolayNikolaev1/news_website_course_project/issues"
+  },
+  "homepage": "https://github.com/NikolayNikolaev1/news_website_course_project#readme",
+  "dependencies": {
+    "body-parser": "1.19.2",
+    "cookie-parser": "^1.4.6",
+    "express": "^4.17.2",
+    "express-session": "1.17.2",
+    "hbs": "4.2.0",
+    "mongoose": "^6.1.8",
+    "nodemon": "^2.0.15",
+    "passport": "0.5.2",
+    "passport-local": "1.0.0"
+  }
+}

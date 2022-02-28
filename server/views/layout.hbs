@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>News Webserver</title>
+    <link href="/css/site.css" type="text/css" rel="stylesheet" />
+</head>
+
+<body>
+    <ul>
+        {{#if currentUser}}
+        <li>{{currentUser.email}}</li>
+        <li>
+            <form action="/logout" id="logout-form" method="post"></form>
+            <a href="javascript:document.getElementById('logout-form').submit()">Logout</a>
+        </li>
+        {{else}}
+        <li><a href="/register">Register</a></li>
+        <li><a href="/login">Login</a></li>
+        {{/if}}
+        {{#if globalError}}
+        <h1>{{globalError}}</h1>
+        {{/if}}
+    </ul>
+    {{{body}}}
+</body>
+
+</html>
