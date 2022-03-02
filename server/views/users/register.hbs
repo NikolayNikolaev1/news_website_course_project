@@ -1,7 +1,7 @@
-<form action="/register" method="post">
+<form action={{registerRoute}} method="post">
     <label for="email">Email: </label>
     <br>
-    <input type="email" name="email" id="email">
+    <input type="email" name="email" id="email" value={{user.email}}>
     <br>
     <label for="password">Password: </label>
     <br>

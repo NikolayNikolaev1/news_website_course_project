@@ -1,11 +1,16 @@
 const { Schema, model } = require('mongoose');
 const encryption = require('../utilities/encryption');
-
-const REQUIRED_VALIDATION_MESSAGE = '{PATH} is required';
+const { DATA_ERRS, DATA_VALIDATIONS } = require('../utilities/constants');
 
 const userSchema = new Schema({
-    email: { type: String, required: REQUIRED_VALIDATION_MESSAGE, unique: true },
-    hashedPassword: { type: String, required: REQUIRED_VALIDATION_MESSAGE },
+    email: {
+        type: String,
+        required: DATA_ERRS.REQUIRED_VALIDATION_MESSAGE,
+        unique: true,
+        max: [DATA_VALIDATIONS.EMAIL_MAX_LENGTH, DATA_ERRS.EMAIL_LENGTH_VALIDATION_MESSAGE],
+        min: [DATA_VALIDATIONS.EMAIL_MIN_LENGTH, DATA_ERRS.EMAIL_LENGTH_VALIDATION_MESSAGE]
+    },
+    hashedPassword: { type: String, required: DATA_ERRS.REQUIRED_VALIDATION_MESSAGE },
     salt: String,
     roles: [String]
 });
