@@ -11,6 +11,7 @@ module.exports = Object.freeze({
         PASSWORD_MIN_LENGTH: 4
     },
     GLOBAL_ERRS: {
+        EMAIL_EXISTS: 'Email already in use.',
         INVALID_USER_DATA: 'Invalid user data.',
         PASSWORD_MISSMATCH: 'Passwords do not match.'
     },

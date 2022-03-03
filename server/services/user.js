@@ -1,9 +1,10 @@
 const User = require('../models/User');
 
-async function createAsync(email, hashedPassword) {
+async function createAsync(email, hashedPassword, salt) {
     const user = new User({
         email,
-        hashedPassword
+        hashedPassword,
+        salt
     });
 
     await user.save();
