@@ -15,12 +15,17 @@ module.exports = Object.freeze({
         INVALID_USER_DATA: 'Invalid user data.',
         PASSWORD_MISSMATCH: 'Passwords do not match.'
     },
+    RES_ERR_TYPE: {
+        DATABASE: 'mongodb'
+    },
     ROUTES: {
         LOGIN: '/login',
         LOGOUT: '/logout',
         REGISTER: '/register',
     },
     VIEWS: {
+        ERROR_404: 'errors/404',
+        ERROR_500: 'errors/500',
         LOGIN: 'users/login',
         REGISTER: 'users/register'
     }

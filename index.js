@@ -2,24 +2,18 @@ const express = require('express');
 
 const env = process.env.NODE_ENV || 'development';
 
-const config = require('./server/config')[env];
-const dbConfig = require('./server/config/database');
-const expressConfig = require('./server/config/express');
-const routesConfig = require('./server/config/routes');
-require('./server/config/passport')();
+const settings = require('./server/config/settings')[env];
+const config = require('./server/config');
 
 start();
 
 async function start() {
     const app = express();
+    await config(app, settings);
 
-    await dbConfig(config);
-    expressConfig(config, app);
-    routesConfig(app);
-
-    app.listen(config.PORT, () => {
+    app.listen(settings.PORT, () => {
         if (env === 'development') {
-            console.log(`Appliation started at ${config.URL}:${config.PORT}`);
+            console.log(`Appliation started at ${settings.URL}:${settings.PORT}`);
         }
     });
 };

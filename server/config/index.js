@@ -1,24 +1,22 @@
-const path = require('path');
+const expressConfig = require('./express');
+const mongooseConfig = require('./database');
+const routesConfig = require('./routes');
+const passport = require('./passport');
+const { RES_ERR_TYPE, VIEWS } = require('../utilities/constants');
 
-let rootPath = path.normalize(path.join(__dirname, '/../../'));
+module.exports = async (app, config) => {
+    await mongooseConfig(config);
+    expressConfig(app, config);
+    routesConfig(app);
+    passport();
 
-module.exports = {
-    development: {
-        ADMIN_EMAIL: 'admin@admin.admin',
-        ADMIN_PASSWORD: 'admin',
-        DB_CONNECTION_STRING: 'mongodb://localhost:27017/news-website-db',
-        PORT: 8000,
-        ROOT_PATH: rootPath,
-        SESSION_SECRET: 'session-secret',
-        URL: 'http://localhost'
-    },
-    production: {
-        ADMIN_EMAIL: process.env.ADMIN_EMAIL,
-        ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
-        DB_CONNECTION_STRING: process.env.MONGO_DB_CONNECTION_STRING,
-        PORT: process.env.port,
-        ROOT_PATH: rootPath,
-        SESSION_SECRET: process.env.SESSION_SECRET_STRING,
-        URL: process.env.URL
-    }
+    app.use((err, req, res, next) => {
+        console.log('Error Handling Middleware called');
+        console.log('Path: ', req.path);
+        console.error('Error: ', err);
+
+        if (err.type === RES_ERR_TYPE.DATABASE) {
+            res.render(VIEWS.ERROR_500);
+        }
+    });
 };

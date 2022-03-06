@@ -6,7 +6,7 @@ const passport = require('passport')
 const path = require('path');
 const session = require('express-session');
 
-module.exports = (config, app) => {
+module.exports = (app, config) => {
     app.set('view engine', 'hbs');
     app.set('views', path.join(config.ROOT_PATH, './server/views/'));
 
