@@ -1,7 +1,9 @@
-let homeController = require('./home');
-let usersController = require('./users');
+const homeController = require('./home');
+const usersController = require('./users');
+const websitesController = require('./websites');
 
 module.exports = {
     home: homeController,
-    users: usersController
+    users: usersController,
+    websites: websitesController
 };
