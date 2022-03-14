@@ -11,15 +11,15 @@
         {{#if currentUser}}
         <li>{{currentUser.email}}</li>
         <li>
-            <form action="/logout" id="logout-form" method="post"></form>
+            <form action={{routes.LOGOUT}} id="logout-form" method="post"></form>
             <a href="javascript:document.getElementById('logout-form').submit()">Logout</a>
         </li>
         <li>
-            <a href="/website/create">Create Website</a>
+            <a href={{routes.WEBSITE_CREATE}}>Create Website</a>
         </li>
         {{else}}
-        <li><a href="/register">Register</a></li>
-        <li><a href="/login">Login</a></li>
+        <li><a href={{routes.REGISTER}}>Register</a></li>
+        <li><a href={{routes.LOGIN}}>Login</a></li>
         {{/if}}
         {{#if globalError}}
         <h1>{{globalError}}</h1>

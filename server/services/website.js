@@ -1,15 +1,17 @@
 const Website = require('../models/Website');
+const { GLOBAL_ERRS } = require('../utilities/constants');
+const { throwExpectedServiceError } = require('../utilities/error-handler');
 
-async function createAsync(name, id, publisher) {
-    const websiteExists = await getWebsiteByIdAsync(id);
+async function create(name, domain, publisher) {
+    const websiteExists = await this.getWebsiteByDomain(domain);
 
     if (websiteExists) {
-        return null;
+        throwExpectedServiceError((GLOBAL_ERRS.WEBSITE_DOMAIN_EXISTS(domain)));
     }
 
     const website = new Website({
         name,
-        id,
+        domain,
         publisher
     });
 
@@ -17,11 +19,39 @@ async function createAsync(name, id, publisher) {
     return website;
 }
 
-async function getWebsiteByIdAsync(id) {
-    const website = await Website.findOne({ id: id });
+async function update(originalDomain, name, domain, currentUser) {
+    const website = await getWebsiteByDomain(originalDomain);
+
+    if (!website.publisher.equals(currentUser)) {
+        throw new Error('Current User not authorized to edit this website.');
+    }
+
+    website.name = name;
+    website.id = id;
+
+    await website.save();
+    return website;
+}
+
+// Return website for users that are publishers only.
+async function getPublisherWebsiteByDomain(domain, publisher) {
+    const website = await getWebsiteByDomain(domain);
+
+    if (!website.publisher.equals(publisher)) {
+        throw new Error('Current User not authorized to edit this website.');
+    }
+
+    return website;
+}
+
+async function getWebsiteByDomain(domain) {
+    const website = await Website.findOne({ domain: domain });
     return website;
 }
 
 module.exports = {
-    createAsync
+    create,
+    getPublisherWebsiteByDomain,
+    getWebsiteByDomain,
+    update
 }

@@ -5,10 +5,12 @@ const handlebars = require('hbs');
 const passport = require('passport')
 const path = require('path');
 const session = require('express-session');
+const { ROUTES } = require('../utilities/constants');
 
 module.exports = (app, config) => {
     app.set('view engine', 'hbs');
     app.set('views', path.join(config.ROOT_PATH, './server/views/'));
+    app.locals.routes = ROUTES;
 
     app.use(cookieParser());
     app.use(bodyParser.urlencoded({ extended: true }));
