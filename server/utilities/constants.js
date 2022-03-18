@@ -1,4 +1,6 @@
 const DATA_VALIDATIONS = {
+    ARTICLE_TITLE_MAX_LENGTH: 100,
+    ARTICLE_TITLE_MIN_LENGTH: 10,
     EMAIL_MAX_LENGTH: 320,
     EMAIL_MIN_LENGTH: 3,
     PASSWORD_MAX_LENGTH: 256,
@@ -12,10 +14,12 @@ const DATA_VALIDATIONS = {
 module.exports = Object.freeze({
     DATA_ERRS: {
         REQUIRED_VALIDATION_MESSAGE: '{PATH} is required',
-        PASSWORD_LENGTH_VALIDATION_MESSAGE:
-            `Password must be between ${DATA_VALIDATIONS.PASSWORD_MIN_LENGTH} and ${DATA_VALIDATIONS.PASSWORD_MAX_LENGTH} characters.`,
+        ARTICLE_TITLE_LENGTH_VALIDATION_MESSAGE:
+            `Article length must be between ${DATA_VALIDATIONS.ARTICLE_TITLE_MIN_LENGTH} and ${DATA_VALIDATIONS.ARTICLE_TITLE_MAX_LENGTH} characters long.`,
         EMAIL_LENGTH_VALIDATION_MESSAGE:
             `Email must be between ${DATA_VALIDATIONS.EMAIL_MIN_LENGTH} and ${DATA_VALIDATIONS.EMAIL_MAX_LENGTH} characters.`,
+        PASSWORD_LENGTH_VALIDATION_MESSAGE:
+            `Password must be between ${DATA_VALIDATIONS.PASSWORD_MIN_LENGTH} and ${DATA_VALIDATIONS.PASSWORD_MAX_LENGTH} characters.`,
         WEBSITE_DOMAIN_LENGTH_VALIDATION_MESSAGE:
             `Name must be between ${DATA_VALIDATIONS.WEBSITE_DOMAIN_MIN_LENGTH} and ${DATA_VALIDATIONS.WEBSITE_DOMAIN_MAX_LENGTH} characters long.`,
         WEBSITE_NAME_LENGTH_VALIDATION_MESSAGE:
@@ -32,6 +36,7 @@ module.exports = Object.freeze({
         DATABASE: 'mongodb'
     },
     ROUTES: {
+        ARTICLE_CREATE: '/:domain/article/create',
         LOGIN: '/login',
         LOGOUT: '/logout',
         REGISTER: '/register',

@@ -3,6 +3,13 @@ const encryption = require('../utilities/encryption');
 const { GLOBAL_ERRS } = require('../utilities/constants');
 const { throwExpectedServiceError } = require('../utilities/error-handler');
 
+async function addWebsite(userId, website) {
+    const user = await User.findById(userId);
+
+    user.websites.push(website);
+    await user.save();
+}
+
 async function create(email, password) {
     const userExists = await getUserByEmail(email);
 
@@ -39,6 +46,7 @@ async function signup(email, password) {
 }
 
 module.exports = {
+    addWebsite,
     create,
     getUserByEmail,
     signup

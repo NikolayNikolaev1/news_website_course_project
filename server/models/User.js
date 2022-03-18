@@ -12,7 +12,11 @@ const userSchema = new Schema({
     },
     hashedPassword: { type: String, required: DATA_ERRS.REQUIRED_VALIDATION_MESSAGE },
     salt: String,
-    roles: [String]
+    roles: [String],
+    websites: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Website'
+    }]
 });
 
 userSchema.method({

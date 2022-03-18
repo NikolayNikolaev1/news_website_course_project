@@ -39,12 +39,12 @@ router.post(
 router.get(
     ROUTES.WEBSITE_EDIT,
     isAuthenticated,
+    isPublisher,
     asyncHandler(async (req, res, next) => {
         const websiteDomain = req.params.domain;
-        const currentUserId = req.user._id;
 
         await websiteService
-            .getPublisherWebsiteByDomain(websiteDomain, currentUserId)
+            .getWebsiteByDomain(websiteDomain)
             .then(website => res.render(VIEWS.WEBSITE_EDIT, { model: website }))
             .catch(error => {
                 error.type = RES_ERR_TYPE.DATABASE;
@@ -55,6 +55,7 @@ router.get(
 router.post(
     ROUTES.WEBSITE_EDIT,
     isAuthenticated,
+    isPublisher,
     websiteData(),
     validate(VIEWS.WEBSITE_EDIT),
     asyncHandler(async (req, res, next) => {

@@ -1,6 +1,7 @@
 const Website = require('../models/Website');
 const { GLOBAL_ERRS } = require('../utilities/constants');
 const { throwExpectedServiceError } = require('../utilities/error-handler');
+const { addWebsite } = require('./user');
 
 async function create(name, domain, publisher) {
     const websiteExists = await this.getWebsiteByDomain(domain);
@@ -15,19 +16,7 @@ async function create(name, domain, publisher) {
         publisher
     });
 
-    await website.save();
-    return website;
-}
-
-async function update(originalDomain, name, domain, currentUser) {
-    const website = await getWebsiteByDomain(originalDomain);
-
-    if (!website.publisher.equals(currentUser)) {
-        throw new Error('Current User not authorized to edit this website.');
-    }
-
-    website.name = name;
-    website.id = id;
+    addWebsite(publisher, website);
 
     await website.save();
     return website;
@@ -49,9 +38,34 @@ async function getWebsiteByDomain(domain) {
     return website;
 }
 
+async function isUserWebsitePublisher(domain, userId) {
+    const website = await getWebsiteByDomain(domain);
+
+    if (website.publisher.equals(userId)) {
+        return true;
+    }
+
+    return false;
+}
+
+async function update(originalDomain, name, domain, currentUser) {
+    const website = await getWebsiteByDomain(originalDomain);
+
+    if (!website.publisher.equals(currentUser)) {
+        throw new Error('Current User not authorized to edit this website.');
+    }
+
+    website.name = name;
+    website.id = id;
+
+    await website.save();
+    return website;
+}
+
 module.exports = {
     create,
     getPublisherWebsiteByDomain,
     getWebsiteByDomain,
+    isUserWebsitePublisher,
     update
 }
