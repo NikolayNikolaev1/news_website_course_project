@@ -36,9 +36,31 @@ router.post(
             });
     }));
 
+router.post(
+    ROUTES.WEBSITE_DELETE,
+    isPublisher,
+    asyncHandler(async (req, res, next) => {
+        const websiteDomain = req.params.domain;
+
+        await websiteService
+            .deleteByDomain(websiteDomain)
+            .then(res.redirect('/'))
+            .catch(error => {
+                if (error.isExpected) {
+                    return renderFormError(
+                        res,
+                        websiteModel,
+                        VIEWS.WEBSITE_CREATE,
+                        error.message);
+                }
+
+                error.type = RES_ERR_TYPE.DATABASE;
+                next(error);
+            });
+    }));
+
 router.get(
     ROUTES.WEBSITE_EDIT,
-    isAuthenticated,
     isPublisher,
     asyncHandler(async (req, res, next) => {
         const websiteDomain = req.params.domain;
@@ -54,17 +76,15 @@ router.get(
 
 router.post(
     ROUTES.WEBSITE_EDIT,
-    isAuthenticated,
     isPublisher,
     websiteData(),
     validate(VIEWS.WEBSITE_EDIT),
     asyncHandler(async (req, res, next) => {
         const websiteDomain = req.params.domain;
-        const currentUserId = req.user._id;
         let website = req.body;
 
         await websiteService
-            .update(websiteDomain, website.name, website.domain, currentUserId)
+            .update(websiteDomain, website.name, website.domain)
             .then(website => res.render(VIEWS.WEBSITE_EDIT, { model: website }))
             .catch(error => {
                 error.type = RES_ERR_TYPE.DATABASE;

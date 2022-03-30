@@ -3,6 +3,24 @@ const { DATA_ERRS, DATA_VALIDATIONS, GLOBAL_ERRS } = require('../utilities/const
 const { renderFormError } = require('../utilities/view-handler');
 
 module.exports = {
+    articleData: () => {
+        return [
+            body('title')
+                .notEmpty()
+                .isLength({
+                    min: DATA_VALIDATIONS.ARTICLE_TITLE_MIN_LENGTH,
+                    max: DATA_VALIDATIONS.ARTICLE_TITLE_MAX_LENGTH
+                })
+                .withMessage(DATA_ERRS.ARTICLE_TITLE_LENGTH_VALIDATION_MESSAGE),
+            body('text')
+                .notEmpty()
+                .isLength({
+                    min: DATA_VALIDATIONS.ARTICLE_TEXT_MIN_LENGTH,
+                    max: DATA_VALIDATIONS.ARTICLE_TEXT_MAX_LENGTH
+                })
+                .withMessage(DATA_ERRS.ARTICLE_TEXT_LENGTH_VALIDATION_MESSAGE)
+        ]
+    },
     userRegister: () => {
         return [
             body('email')

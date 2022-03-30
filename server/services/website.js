@@ -22,6 +22,18 @@ async function create(name, domain, publisher) {
     return website;
 }
 
+async function deleteByDomain(domain) {
+    const deletedCount = Website.deleteOne({ domain: domain });
+
+    if (deletedCount !== 0) {
+        throwExpectedServiceError((GLOBAL_ERRS.WEBSITE_NOT_EXISTS));
+    }
+}
+
+async function getAll() {
+    return await Website.find({});
+}
+
 // Return website for users that are publishers only.
 async function getPublisherWebsiteByDomain(domain, publisher) {
     const website = await getWebsiteByDomain(domain);
@@ -48,15 +60,11 @@ async function isUserWebsitePublisher(domain, userId) {
     return false;
 }
 
-async function update(originalDomain, name, domain, currentUser) {
+async function update(originalDomain, name, domain) {
     const website = await getWebsiteByDomain(originalDomain);
 
-    if (!website.publisher.equals(currentUser)) {
-        throw new Error('Current User not authorized to edit this website.');
-    }
-
     website.name = name;
-    website.id = id;
+    website.domain = domain;
 
     await website.save();
     return website;
@@ -64,6 +72,8 @@ async function update(originalDomain, name, domain, currentUser) {
 
 module.exports = {
     create,
+    deleteByDomain,
+    getAll,
     getPublisherWebsiteByDomain,
     getWebsiteByDomain,
     isUserWebsitePublisher,

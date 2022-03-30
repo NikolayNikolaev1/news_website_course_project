@@ -19,7 +19,11 @@ const websiteSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: true
-    }
+    },
+    articles: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Article'
+    }]
 });
 
 const Website = model('Website', websiteSchema);

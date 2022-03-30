@@ -2,30 +2,97 @@
 <html lang="en">
 
 <head>
-    <title>News Webserver</title>
+    <title>News Website Creator</title>
     <link href="/css/site.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 
 <body>
-    <ul>
-        {{#if currentUser}}
-        <li>{{currentUser.email}}</li>
-        <li>
-            <form action={{routes.LOGOUT}} id="logout-form" method="post"></form>
-            <a href="javascript:document.getElementById('logout-form').submit()">Logout</a>
-        </li>
-        <li>
-            <a href={{routes.WEBSITE_CREATE}}>Create Website</a>
-        </li>
-        {{else}}
-        <li><a href={{routes.REGISTER}}>Register</a></li>
-        <li><a href={{routes.LOGIN}}>Login</a></li>
-        {{/if}}
-        {{#if globalError}}
-        <h1>{{globalError}}</h1>
-        {{/if}}
-    </ul>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href={{routes.HOME}}>News Website Creator</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+            aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href={{routes.HOME}}>Home <span class="sr-only">(current)</span></a>
+                </li>
+
+
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Disabled</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav justify-content-end">
+
+                {{#if currentUser}}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Hello,
+                        {{currentUser.email}}!</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href={{routes.WEBSITE_CREATE}}>Create a Website</a>
+                        <form action={{routes.LOGOUT}} id="logout-form" method="post"></form>
+                        <a class="dropdown-item"
+                            href="javascript:document.getElementById('logout-form').submit()">Logout</a>
+                    </div>
+                </li>
+                {{else}}
+                <li class="nav-item">
+                    <a class="nav-link" href={{routes.LOGIN}}>Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href={{routes.REGISTER}}>Register</a>
+                </li>
+                {{/if}}
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+
+    <br>
+    {{!-- TODO: FIX --}}
+    <br>
+
+
+    {{#if globalError}}
+    <h1></h1>
+
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>{{globalError}}</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {{/if}}
+
     {{{body}}}
+    <footer class="container fixed-bottom">
+        <p>© Company 2017-2018</p>
+    </footer>
+    {{!--
+    <script src="../../assets/js/vendor/popper.min.js"></script> --}}
+    <script src="https://code.jquery.com/jquery-3.3.1.js"
+        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
+
 
 </html>

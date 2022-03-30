@@ -30,6 +30,10 @@ async function create(email, password) {
     return user;
 }
 
+async function getAll() {
+    return await User.find({});
+}
+
 async function getUserByEmail(email) {
     const user = await User.findOne({ email: email });
     return user;
@@ -48,6 +52,7 @@ async function signup(email, password) {
 module.exports = {
     addWebsite,
     create,
+    getAll,
     getUserByEmail,
     signup
 }
