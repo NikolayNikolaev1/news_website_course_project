@@ -58,7 +58,14 @@ module.exports = {
                     min: DATA_VALIDATIONS.WEBSITE_DOMAIN_MIN_LENGTH,
                     max: DATA_VALIDATIONS.WEBSITE_DOMAIN_MAX_LENGTH
                 })
-                .withMessage(DATA_ERRS.WEBSITE_DOMAIN_LENGTH_VALIDATION_MESSAGE)
+                .withMessage(DATA_ERRS.WEBSITE_DOMAIN_LENGTH_VALIDATION_MESSAGE),
+            body('description')
+                .notEmpty()
+                .isLength({
+                    min: DATA_VALIDATIONS.WEBSITE_DESCRIPTION_MIN_LENGTH,
+                    max: DATA_VALIDATIONS.WEBSITE_DESCRIPTION_MAX_LENGTH
+                })
+                .withMessage(DATA_ERRS.WEBSITE_DESCRIPTION_LENGTH_VALIDATION_MESSAGE)
         ];
     },
     validate: (viewPath) => {

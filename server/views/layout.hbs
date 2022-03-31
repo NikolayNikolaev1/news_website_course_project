@@ -26,14 +26,23 @@
             </ul>
 
             <ul class="navbar-nav justify-content-end">
-
                 {{#if currentUser}}
+                {{#if isPublisher}}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{model.name}}</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href={{routes.ARTICLE_CREATE}}>Create Article</a>
+                        <a class="dropdown-item" href="/{{isPublisher.domain}}/edit">Edit Website</a>
+                    </div>
+                </li>
+                {{/if}}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Hello,
                         {{currentUser.email}}!</a>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="/{{currentUser._id}}/websites">My Websites</a>
                         <a class="dropdown-item" href={{routes.WEBSITE_CREATE}}>Create a Website</a>
                         <form action={{routes.LOGOUT}} id="logout-form" method="post"></form>
                         <a class="dropdown-item"
@@ -71,7 +80,7 @@
         </button>
     </div>
     {{/if}}
-
+    
     {{{body}}}
     <footer class="container fixed-bottom">
         <p>TU Varna 2022 - Course Project by Nikolay Nikolaev. This is an open source project.

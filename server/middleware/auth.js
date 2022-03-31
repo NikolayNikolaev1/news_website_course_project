@@ -27,15 +27,22 @@ module.exports = {
         const domain = req.params.domain;
         const userId = req.user._id;
 
-        let result = await isUserWebsitePublisher(domain, userId)
-
-        if (!result) {
-            res.redirect('/');
-        }
-        else {
-            next();
-        }
-
+        await isUserWebsitePublisher(domain, userId)
+            .then(result => {
+                if (!result) {
+                    res.redirect('/');
+                }
+                else {
+                    res.locals.isPublisher = {
+                        domain
+                    };
+                    next();
+                }
+            })
+            .catch(error => {
+                error.type = "mongodb";
+                next(error);
+            });
     }),
     isInRole: (role) => {
         return (req, res, next) => {

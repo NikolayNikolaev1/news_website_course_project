@@ -2,9 +2,10 @@ const router = require('express').Router();
 const asyncHandler = require('../utilities/async-handler');
 const { isAuthenticated, isGuest } = require('../middleware/auth');
 const { userRegister, validate } = require('../middleware/validator');
-const { renderFormError, userViewModel } = require('../utilities/view-handler');
+const { renderFormError, userWebsitesViewModel } = require('../utilities/view-handler');
 const { RES_ERR_TYPE, ROUTES, VIEWS } = require('../utilities/constants');
 const userService = require('../services/user');
+const { getAllByUserId } = require('../services/website');
 const { userServiceModel } = require('../services/handler')
 
 router.get(ROUTES.LOGIN, isGuest, (req, res) => {
@@ -63,6 +64,23 @@ router.post(
                         error.message);
                 }
 
+                error.type = RES_ERR_TYPE.DATABASE;
+                next(error);
+            });
+    }));
+
+router.get(
+    ROUTES.USER_WEBSITES,
+    isAuthenticated,
+    asyncHandler(async (req, res, next) => {
+        const userId = req.params.id;
+
+        await getAllByUserId(userId)
+            .then(websites => {
+                let websiteModels = userWebsitesViewModel(websites);
+                res.render(VIEWS.USER_WEBSITES, { websites: websiteModels });
+            })
+            .catch(error => {
                 error.type = RES_ERR_TYPE.DATABASE;
                 next(error);
             });

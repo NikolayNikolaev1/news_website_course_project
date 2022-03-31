@@ -7,7 +7,7 @@ const DATA_VALIDATIONS = {
     EMAIL_MIN_LENGTH: 3,
     PASSWORD_MAX_LENGTH: 256,
     PASSWORD_MIN_LENGTH: 4,
-    WEBSITE_DESCRIPTION_MAX_LENGTH: 100,
+    WEBSITE_DESCRIPTION_MAX_LENGTH: 300,
     WEBSITE_DESCRIPTION_MIN_LENGTH: 10,
     WEBSITE_DOMAIN_MAX_LENGTH: 10,
     WEBSITE_DOMAIN_MIN_LENGTH: 3,
@@ -55,9 +55,10 @@ module.exports = Object.freeze({
         LOGIN: '/login',
         LOGOUT: '/logout',
         REGISTER: '/register',
+        USER_WEBSITES: '/:id/websites',
         WEBSITE_CREATE: '/website/create',
         WEBSITE_DELETE: '/:domain/delete',
-        WEBSITE_EDIT: '/website/:domain/edit'
+        WEBSITE_EDIT: '/:domain/edit'
     },
     VIEWS: {
         ARTICLE_CREATE: 'articles/create',
@@ -68,6 +69,7 @@ module.exports = Object.freeze({
         HOME: 'home/index',
         LOGIN: 'users/login',
         REGISTER: 'users/register',
+        USER_WEBSITES: 'users/websites',
         WEBSITE_CREATE: 'websites/create',
         WEBSITE_EDIT: 'websites/edit'
     }

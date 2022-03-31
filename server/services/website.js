@@ -35,6 +35,10 @@ async function getAll() {
     return await Website.find({});
 }
 
+async function getAllByUserId(userId) {
+    return await Website.find({ publisher: userId })
+}
+
 // Return website for users that are publishers only.
 async function getPublisherWebsiteByDomain(domain, publisher) {
     const website = await getWebsiteByDomain(domain);
@@ -64,7 +68,7 @@ async function isUserWebsitePublisher(domain, userId) {
 async function updateByDomain(domain, websiteModel) {
     const websiteExists = await this.getWebsiteByDomain(websiteModel.domain);
 
-    if (websiteExists) {
+    if (websiteExists && websiteModel.domain !== domain) {
         throwExpectedServiceError((GLOBAL_ERRS.WEBSITE_DOMAIN_EXISTS(websiteModel.domain)));
     }
 
@@ -81,6 +85,7 @@ module.exports = {
     create,
     deleteByDomain,
     getAll,
+    getAllByUserId,
     getPublisherWebsiteByDomain,
     getWebsiteByDomain,
     isUserWebsitePublisher,

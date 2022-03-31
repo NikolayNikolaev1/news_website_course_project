@@ -1,0 +1,41 @@
+<div class="container">
+    <div class="row">
+        {{#if websites}}
+        {{#each websites}}
+        <div class="col-md-4">
+            <h2>{{this.name}}</h2>
+            <p>{{this.description}}</p>
+            <p>
+
+            <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                <a class="btn btn-small btn-secondary" href="#" role="button">View details »</a>
+                <a class="btn btn-warning" href="/{{this.domain}}/edit" role="button">Edit</a>
+                <a class="btn btn-danger" href="#" role="button">Delete</a>
+            </div>
+            </p>
+        </div>
+        {{/each}}
+        {{else}}
+        <div class="jumbotron">
+            <div class="container">
+                <h1 class="display-3">Welcome to News Website Creator!</h1>
+                <p>This website was made for course project purposes by Nikolay Nikolaev. Make an account and create
+                    your own
+                    news website and start posting articles!</p>
+                <div class="row">
+                    <div class="col text-center">
+                        {{#if currentUser}}
+                        <p><a class="btn btn-primary btn-lg" href={{routes.WEBSITE_CREATE}} role="button">Create
+                                Website »</a></p>
+                        {{else}}
+                        <p><a class="btn btn-primary btn-lg" href={{routes.LOGIN}} role="button">Sign up »</a></p>
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{/if}}
+
+        <hr>
+
+    </div>
