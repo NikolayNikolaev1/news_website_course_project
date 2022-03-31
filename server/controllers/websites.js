@@ -2,8 +2,9 @@ const router = require('express').Router();
 const asyncHandler = require('../utilities/async-handler');
 const { RES_ERR_TYPE, ROUTES, VIEWS } = require('../utilities/constants');
 const { isAuthenticated, isPublisher } = require('../middleware/auth');
-const { renderFormError } = require('../utilities/view-handler');
+const { renderFormError, websiteViewModel } = require('../utilities/view-handler');
 const { websiteData, validate } = require('../middleware/validator');
+const { websiteServiceModel } = require('../services/handler');
 const websiteService = require('../services/website');
 
 router.get(ROUTES.WEBSITE_CREATE, isAuthenticated, (req, res) => {
@@ -16,11 +17,11 @@ router.post(
     websiteData(),
     validate(VIEWS.WEBSITE_CREATE),
     asyncHandler(async (req, res, next) => {
-        let websiteModel = req.body;
+        let websiteModel = websiteServiceModel(req.body);
         websiteModel.publisherId = req.user.id;
 
         await websiteService
-            .create(websiteModel.name, websiteModel.domain, websiteModel.publisherId)
+            .create(websiteModel)
             .then(website => res.redirect(`/website/${website.domain}`))
             .catch(error => {
                 if (error.isExpected) {
@@ -80,13 +81,21 @@ router.post(
     websiteData(),
     validate(VIEWS.WEBSITE_EDIT),
     asyncHandler(async (req, res, next) => {
-        const websiteDomain = req.params.domain;
-        let website = req.body;
+        const domain = req.params.domain;
+        let websiteModel = websiteServiceModel(req.body);
 
         await websiteService
-            .update(websiteDomain, website.name, website.domain)
+            .updateByDomain(domain, websiteModel)
             .then(website => res.render(VIEWS.WEBSITE_EDIT, { model: website }))
             .catch(error => {
+                if (error.isExpected) {
+                    return renderFormError(
+                        res,
+                        websiteModel,
+                        VIEWS.WEBSITE_CREATE,
+                        error.message);
+                }
+
                 error.type = RES_ERR_TYPE.DATABASE;
                 next(error);
             });

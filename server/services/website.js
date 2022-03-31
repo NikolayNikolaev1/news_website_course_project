@@ -3,20 +3,21 @@ const { GLOBAL_ERRS } = require('../utilities/constants');
 const { throwExpectedServiceError } = require('../utilities/error-handler');
 const { addWebsite } = require('./user');
 
-async function create(name, domain, publisher) {
-    const websiteExists = await this.getWebsiteByDomain(domain);
+async function create(websiteModel) {
+    const websiteExists = await this.getWebsiteByDomain(websiteModel.domain);
 
     if (websiteExists) {
-        throwExpectedServiceError((GLOBAL_ERRS.WEBSITE_DOMAIN_EXISTS(domain)));
+        throwExpectedServiceError((GLOBAL_ERRS.WEBSITE_DOMAIN_EXISTS(websiteModel.domain)));
     }
 
     const website = new Website({
-        name,
-        domain,
-        publisher
+        name: websiteModel.name,
+        domain: websiteModel.domain,
+        description: websiteModel.description,
+        publisher: websiteModel.publisherId
     });
 
-    addWebsite(publisher, website);
+    addWebsite(websiteModel.publisherId, website);
 
     await website.save();
     return website;
@@ -60,11 +61,17 @@ async function isUserWebsitePublisher(domain, userId) {
     return false;
 }
 
-async function update(originalDomain, name, domain) {
-    const website = await getWebsiteByDomain(originalDomain);
+async function updateByDomain(domain, websiteModel) {
+    const websiteExists = await this.getWebsiteByDomain(websiteModel.domain);
 
-    website.name = name;
-    website.domain = domain;
+    if (websiteExists) {
+        throwExpectedServiceError((GLOBAL_ERRS.WEBSITE_DOMAIN_EXISTS(websiteModel.domain)));
+    }
+
+    const website = await getWebsiteByDomain(domain);
+    website.name = websiteModel.name;
+    website.domain = websiteModel.domain;
+    website.description = websiteModel.description
 
     await website.save();
     return website;
@@ -77,5 +84,5 @@ module.exports = {
     getPublisherWebsiteByDomain,
     getWebsiteByDomain,
     isUserWebsitePublisher,
-    update
+    updateByDomain
 }

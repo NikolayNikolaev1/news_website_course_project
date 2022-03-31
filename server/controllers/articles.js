@@ -5,6 +5,7 @@ const asyncHandler = require('../utilities/async-handler');
 const { ROUTES, VIEWS, RES_ERR_TYPE } = require('../utilities/constants');
 const { renderFormError } = require('../utilities/view-handler');
 const articleService = require('../services/article');
+const { articleServiceModel } = require('../services/handler');
 
 router.get(ROUTES.ARTICLE_CREATE, isPublisher, (req, res) => {
     res.render(VIEWS.ARTICLE_CREATE);
@@ -16,11 +17,11 @@ router.post(
     articleData(),
     validate(VIEWS.ARTICLE_CREATE),
     asyncHandler(async (req, res, next) => {
-        let articleModel = req.body;
+        let articleModel = articleServiceModel(req.body);
         articleModel.websiteDomain = req.params.domain;
 
         await articleService
-            .create(articleModel.title, articleModel.text, articleModel.videoUrl, articleModel.websiteDomain)
+            .create(articleModel)
             .then(article => res.redirect(ROUTES.ARTICLE_DETAILS(articleModel.domain, article._id)))
             .catch(error => {
                 if (error.isExpected) {
@@ -81,10 +82,10 @@ router.post(
     validate(VIEWS.ARTICLE_EDIT),
     asyncHandler(async (req, res, next) => {
         const articleId = req.params.id;
-        let article = req.body;
+        let articleModel = articleServiceModel(req.body);
 
         await articleService
-            .update(articleId, article.title, article.text, article.videoUrl)
+            .update(articleId, articleModel)
             .then(article => res.render(VIEWS.ARTICLE_EDIT, { model: article }))
             .catch(error => {
                 error.type = RES_ERR_TYPE.DATABASE;

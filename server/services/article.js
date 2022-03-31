@@ -1,20 +1,24 @@
 const Article = require('../models/Article');
 const { getWebsiteByDomain } = require('./website');
 const { throwExpectedServiceError } = require('../utilities/error-handler');
-const {GLOBAL_ERRS} = require('../utilities/constants');
+const { GLOBAL_ERRS } = require('../utilities/constants');
 
-async function create(title, text, videoUrl, websiteDomain) {
-    const website = getWebsiteByDomain(websiteDomain);
+async function create(articleModel) {
+    const website = getWebsiteByDomain(articleModel.websiteDomain);
 
     if (!website) {
         return null;
     }
 
+    const date = new Date();
+    const currentDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+
     const article = new Article({
-        title,
-        text,
-        videoUrl,
-        website: website._id
+        title: articleModel.title,
+        text: articleModel.text,
+        videoUrl: articleModel.videoUrl,
+        website: website._id,
+        publicationDate: currentDate
     });
 
     await article.save();
@@ -43,12 +47,12 @@ async function getArticleById(id) {
     return article;
 }
 
-async function update(id, title, text, videoUrl) {
+async function update(id, articleModel) {
     const article = await getArticleById(id);
 
-    article.title = title;
-    article.text = text;
-    article.videoUrl = videoUrl;
+    article.title = articleModel.title;
+    article.text = articleModel.text;
+    article.videoUrl = articleModel.videoUrl;
 
     await article.save();
     return article;

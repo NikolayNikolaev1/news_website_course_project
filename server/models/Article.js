@@ -21,6 +21,10 @@ const articleSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Website',
         required: true
+    },
+    publicationDate: {
+        type: String,
+        required: true
     }
 });
 

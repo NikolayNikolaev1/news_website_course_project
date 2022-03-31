@@ -10,18 +10,18 @@ async function addWebsite(userId, website) {
     await user.save();
 }
 
-async function create(email, password) {
-    const userExists = await getUserByEmail(email);
+async function create(userModel) {
+    const userExists = await getUserByEmail(userModel.email);
 
     if (userExists) {
-        throwExpectedServiceError(GLOBAL_ERRS.EMAIL_EXISTS(email));
+        throwExpectedServiceError(GLOBAL_ERRS.EMAIL_EXISTS(userModel.email));
     }
 
     const salt = encryption.generateSalt();
-    const hashedPassword = encryption.generateHashedPassword(salt, password);
+    const hashedPassword = encryption.generateHashedPassword(salt, userModel.password);
 
     const user = new User({
-        email,
+        email: userModel.email,
         hashedPassword,
         salt
     });
