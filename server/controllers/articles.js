@@ -1,28 +1,34 @@
 const router = require('express').Router();
-const { isPublisher } = require('../middleware/auth');
+const { isPublisher, isAuthenticated } = require('../middleware/auth');
 const { articleData, validate } = require('../middleware/validator');
 const asyncHandler = require('../utilities/async-handler');
 const { ROUTES, VIEWS, RES_ERR_TYPE } = require('../utilities/constants');
-const { renderFormError } = require('../utilities/view-handler');
+const { renderFormError, articleViewMolde } = require('../utilities/view-handler');
 const articleService = require('../services/article');
 const { articleServiceModel } = require('../services/handler');
 
-router.get(ROUTES.ARTICLE_CREATE, isPublisher, (req, res) => {
-    res.render(VIEWS.ARTICLE_CREATE);
-});
+router.get(
+    ROUTES.ARTICLE_CREATE,
+    isAuthenticated,
+    isPublisher(false),
+    (req, res) => {
+        res.render(VIEWS.ARTICLE_CREATE);
+    });
 
 router.post(
     ROUTES.ARTICLE_CREATE,
-    isPublisher,
+    isAuthenticated,
+    isPublisher(false),
     articleData(),
     validate(VIEWS.ARTICLE_CREATE),
     asyncHandler(async (req, res, next) => {
         let articleModel = articleServiceModel(req.body);
-        articleModel.websiteDomain = req.params.domain;
+        const domain = req.params.domain;
+        articleModel.websiteDomain = domain;
 
         await articleService
             .create(articleModel)
-            .then(article => res.redirect(ROUTES.ARTICLE_DETAILS(articleModel.domain, article._id)))
+            .then(article => res.redirect(`/${domain}/article/${article._id}`))
             .catch(error => {
                 if (error.isExpected) {
                     return renderFormError(
@@ -39,7 +45,8 @@ router.post(
 
 router.post(
     ROUTES.ARTICLE_DELETE,
-    isPublisher,
+    isAuthenticated,
+    isPublisher(false),
     asyncHandler(async (req, res, next) => {
         const articleId = req.params.id;
 
@@ -57,12 +64,13 @@ router.post(
 
                 error.type = RES_ERR_TYPE.DATABASE;
                 next(error);
-            })
+            });
     }));
 
 router.get(
     ROUTES.ARTICLE_EDIT,
-    isPublisher,
+    isAuthenticated,
+    isPublisher(false),
     asyncHandler(async (req, res, next) => {
         const articleId = req.params.id;
 
@@ -77,7 +85,8 @@ router.get(
 
 router.post(
     ROUTES.ARTICLE_EDIT,
-    isPublisher,
+    isAuthenticated,
+    isPublisher(false),
     articleData(),
     validate(VIEWS.ARTICLE_EDIT),
     asyncHandler(async (req, res, next) => {
@@ -88,6 +97,32 @@ router.post(
             .update(articleId, articleModel)
             .then(article => res.render(VIEWS.ARTICLE_EDIT, { model: article }))
             .catch(error => {
+                error.type = RES_ERR_TYPE.DATABASE;
+                next(error);
+            });
+    }));
+
+router.get(
+    ROUTES.ARTICLE_INDEX,
+    isPublisher(true),
+    asyncHandler(async (req, res, next) => {
+        const articleId = req.params.id;
+
+        await articleService
+            .getArticleById(articleId)
+            .then(article => {
+                let articleModel = articleViewMolde(article);
+                res.render(VIEWS.ARTICLE_INDEX, { article: articleModel });
+            })
+            .catch(error => {
+                if (error.isExpected) {
+                    return renderFormError(
+                        res,
+                        websiteModel,
+                        VIEWS.ARTICLE_CREATE,
+                        error.message);
+                }
+
                 error.type = RES_ERR_TYPE.DATABASE;
                 next(error);
             });

@@ -5,6 +5,14 @@ module.exports = {
         res.locals.globalError = errorMessage;
         res.render(viewPath, { model: formModel });
     },
+    articleViewMolde: (article) => {
+        return {
+            id: article._id,
+            title: article.title,
+            text: article.text,
+            videoUrl: article.videoUrl
+        };
+    },
     userWebsitesViewModel: (websites) => {
         let websitesModels = [];
 
@@ -17,5 +25,23 @@ module.exports = {
         });
 
         return websitesModels;
+    },
+    websiteArticlesViewModel: (articles) => {
+        let articlesModels = [];
+
+        articles.forEach(article => {
+            articlesModels.push({
+                id: article._id,
+                title: article.title,
+                shortText: article.text.substring(0, 30),
+                publicationDate: article.publicationDate
+            });
+        });
+        
+        articlesModels.sort((a, b) => {
+            return new Date(b.date) - new Date(a.date);
+        });
+
+        return articlesModels;
     }
 };

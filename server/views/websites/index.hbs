@@ -1,0 +1,18 @@
+<div class="container">
+    <div class="row">
+        {{#each articles}}
+        <div class="col-md-4">
+            <h2>{{this.title}}</h2>
+            <p>{{this.shortText}}</p>
+            <p>
+
+            <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                <a class="btn btn-small btn-secondary" href="#" role="button">View details »</a>
+            </div>
+            </p>
+        </div>
+        {{/each}}
+
+        <hr>
+
+    </div>

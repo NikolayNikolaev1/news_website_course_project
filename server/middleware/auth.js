@@ -19,31 +19,49 @@ module.exports = {
             res.redirect('/');
         }
     },
-    isPublisher: asyncHandler(async (req, res, next) => {
-        if (!req.isAuthenticated()) {
-            res.redirect('/');
-        }
-
-        const domain = req.params.domain;
-        const userId = req.user._id;
-
-        await isUserWebsitePublisher(domain, userId)
-            .then(result => {
-                if (!result) {
-                    res.redirect('/');
+    isPublisher: (publicAccess) => {
+        // Middlesware for checking if user is publisher of visited website.
+        // Allows access to publisher only functionallity such as: Article Create/Edit/Delete, Website Edit/Delete etc...
+        // Using for publisher buttons on navigation.
+        return asyncHandler(async (req, res, next) => {
+            if (!req.isAuthenticated()) {
+                if (publicAccess) {
+                    // Public access allows none authenticated users to visit website/articles.
+                    next();
+                    return;
                 }
-                else {
+
+                res.redirect('/');
+            }
+
+            const domain = req.params.domain;
+            const userId = req.user._id;
+
+            await isUserWebsitePublisher(domain, userId)
+                .then(result => {
+                    if (!result) {
+                        if (publicAccess) {
+                            // Public access allows none publishers to get to page.
+                            next();
+                            return;
+                        }
+
+                        res.redirect('/');
+                    }
+
                     res.locals.isPublisher = {
                         domain
                     };
+
                     next();
-                }
-            })
-            .catch(error => {
-                error.type = "mongodb";
-                next(error);
-            });
-    }),
+                    return;
+                })
+                .catch(error => {
+                    error.type = "mongodb";
+                    next(error);
+                });
+        });
+    },
     isInRole: (role) => {
         return (req, res, next) => {
             if (req.isAuthenticated() && req.user.roles.indexOf(role) > -1) {

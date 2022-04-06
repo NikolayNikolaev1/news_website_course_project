@@ -4,7 +4,7 @@ const { throwExpectedServiceError } = require('../utilities/error-handler');
 const { GLOBAL_ERRS } = require('../utilities/constants');
 
 async function create(articleModel) {
-    const website = getWebsiteByDomain(articleModel.websiteDomain);
+    const website = await getWebsiteByDomain(articleModel.websiteDomain);
 
     if (!website) {
         return null;
@@ -41,6 +41,10 @@ async function getAll() {
     return await Article.find({});
 }
 
+async function getAllByWebsiteId(websiteId) {
+    return await Article.find({ website: websiteId });
+}
+
 async function getArticleById(id) {
     const article = await Article.findById(id);
 
@@ -62,6 +66,7 @@ module.exports = {
     create,
     deleteById,
     getAll,
+    getAllByWebsiteId,
     getArticleById,
     update
 };

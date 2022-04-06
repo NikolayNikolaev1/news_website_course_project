@@ -30,9 +30,9 @@
                 {{#if isPublisher}}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{model.name}}</a>
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{isPublisher.domain}}</a>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" href={{routes.ARTICLE_CREATE}}>Create Article</a>
+                        <a class="dropdown-item" href="/{{isPublisher.domain}}/article/create">Create Article</a>
                         <a class="dropdown-item" href="/{{isPublisher.domain}}/edit">Edit Website</a>
                     </div>
                 </li>
@@ -80,7 +80,7 @@
         </button>
     </div>
     {{/if}}
-    
+
     {{{body}}}
     <footer class="container fixed-bottom">
         <p>TU Varna 2022 - Course Project by Nikolay Nikolaev. This is an open source project.

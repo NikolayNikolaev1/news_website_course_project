@@ -2,10 +2,11 @@ const router = require('express').Router();
 const asyncHandler = require('../utilities/async-handler');
 const { RES_ERR_TYPE, ROUTES, VIEWS } = require('../utilities/constants');
 const { isAuthenticated, isPublisher } = require('../middleware/auth');
-const { renderFormError, websiteViewModel } = require('../utilities/view-handler');
+const { renderFormError, websiteArticlesViewModel } = require('../utilities/view-handler');
 const { websiteData, validate } = require('../middleware/validator');
-const { websiteServiceModel } = require('../services/handler');
 const websiteService = require('../services/website');
+const { websiteServiceModel } = require('../services/handler');
+const { getAllByWebsiteId } = require('../services/article');
 
 router.get(ROUTES.WEBSITE_CREATE, isAuthenticated, (req, res) => {
     res.render(VIEWS.WEBSITE_CREATE);
@@ -39,7 +40,8 @@ router.post(
 
 router.post(
     ROUTES.WEBSITE_DELETE,
-    isPublisher,
+    isAuthenticated,
+    isPublisher(false),
     asyncHandler(async (req, res, next) => {
         const websiteDomain = req.params.domain;
 
@@ -62,7 +64,8 @@ router.post(
 
 router.get(
     ROUTES.WEBSITE_EDIT,
-    isPublisher,
+    isAuthenticated,
+    isPublisher(false),
     asyncHandler(async (req, res, next) => {
         const websiteDomain = req.params.domain;
 
@@ -77,7 +80,8 @@ router.get(
 
 router.post(
     ROUTES.WEBSITE_EDIT,
-    isPublisher,
+    isAuthenticated,
+    isPublisher(false),
     websiteData(),
     validate(VIEWS.WEBSITE_EDIT),
     asyncHandler(async (req, res, next) => {
@@ -96,6 +100,30 @@ router.post(
                         error.message);
                 }
 
+                error.type = RES_ERR_TYPE.DATABASE;
+                next(error);
+            });
+    }));
+
+router.get(
+    ROUTES.WEBSITE_INDEX,
+    isPublisher(true),
+    asyncHandler(async (req, res, next) => {
+        const domain = req.params.domain;
+
+        const website = await websiteService
+            .getWebsiteByDomain(domain)
+            // .catch(error => {
+            //     error.type = RES_ERR_TYPE.DATABASE;
+            //     next(error);
+            // });
+
+        await getAllByWebsiteId(website._id)
+            .then(articles => {
+                let articleModels = websiteArticlesViewModel(articles);
+                res.render(VIEWS.WEBSITE_INDEX, { articles: articleModels })
+            })
+            .catch(error => {
                 error.type = RES_ERR_TYPE.DATABASE;
                 next(error);
             });

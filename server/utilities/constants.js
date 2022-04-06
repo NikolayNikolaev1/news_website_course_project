@@ -48,8 +48,8 @@ module.exports = Object.freeze({
     ROUTES: {
         ARTICLE_CREATE: '/:domain/article/create',
         ARTICLE_DELETE: `/:domain/article/delete/:id`,
-        ARTICLE_DETAILS: (domain, id) => `/${domain}/article/${id}`,
         ARTICLE_EDIT: '/:domain/article/edit/:id',
+        ARTICLE_INDEX: `/:domain/article/:id`,
         HOME_ABOUT: '/about',
         HOME_INDEX: '/',
         LOGIN: '/login',
@@ -58,11 +58,13 @@ module.exports = Object.freeze({
         USER_WEBSITES: '/:id/websites',
         WEBSITE_CREATE: '/website/create',
         WEBSITE_DELETE: '/:domain/delete',
-        WEBSITE_EDIT: '/:domain/edit'
+        WEBSITE_EDIT: '/:domain/edit',
+        WEBSITE_INDEX: '/:domain/home'
     },
     VIEWS: {
         ARTICLE_CREATE: 'articles/create',
         ARTICLE_EDIT: 'articles/edit',
+        ARTICLE_INDEX: 'articles/index',
         ERROR_404: 'errors/404',
         ERROR_500: 'errors/500',
         HOME_ABOUT: 'home/about',
@@ -71,6 +73,7 @@ module.exports = Object.freeze({
         REGISTER: 'users/register',
         USER_WEBSITES: 'users/websites',
         WEBSITE_CREATE: 'websites/create',
-        WEBSITE_EDIT: 'websites/edit'
+        WEBSITE_EDIT: 'websites/edit',
+        WEBSITE_INDEX: 'websites/index'
     }
 });
