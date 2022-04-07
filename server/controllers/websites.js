@@ -2,11 +2,12 @@ const router = require('express').Router();
 const asyncHandler = require('../utilities/async-handler');
 const { RES_ERR_TYPE, ROUTES, VIEWS } = require('../utilities/constants');
 const { isAuthenticated, isPublisher } = require('../middleware/auth');
-const { renderFormError, websiteArticlesViewModel } = require('../utilities/view-handler');
+const { renderFormError, websiteArticlesViewModel, websiteHomeViewModel } = require('../utilities/view-handler');
 const { websiteData, validate } = require('../middleware/validator');
 const websiteService = require('../services/website');
 const { websiteServiceModel } = require('../services/handler');
 const { getAllByWebsiteId } = require('../services/article');
+const { getUserById } = require('../services/user');
 
 router.get(ROUTES.WEBSITE_CREATE, isAuthenticated, (req, res) => {
     res.render(VIEWS.WEBSITE_CREATE);
@@ -113,20 +114,25 @@ router.get(
 
         const website = await websiteService
             .getWebsiteByDomain(domain)
-            // .catch(error => {
-            //     error.type = RES_ERR_TYPE.DATABASE;
-            //     next(error);
-            // });
+            .catch(error => {
+                error.type = RES_ERR_TYPE.DATABASE;
+                next(error);
+            });
 
+        website.publisher = await getUserById(website.publisher)
+        const websiteModel = websiteHomeViewModel(website);
         await getAllByWebsiteId(website._id)
             .then(articles => {
                 let articleModels = websiteArticlesViewModel(articles);
-                res.render(VIEWS.WEBSITE_INDEX, { articles: articleModels })
+                websiteModel.articles = articleModels;
             })
             .catch(error => {
                 error.type = RES_ERR_TYPE.DATABASE;
                 next(error);
             });
+
+
+        res.render(VIEWS.WEBSITE_INDEX, { website: websiteModel })
     }));
 
 module.exports = router;

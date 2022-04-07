@@ -33,15 +33,22 @@ module.exports = {
             articlesModels.push({
                 id: article._id,
                 title: article.title,
-                shortText: article.text.substring(0, 30),
+                shortText: article.text.substring(0, 200) + '...',
                 publicationDate: article.publicationDate
             });
         });
-        
+
         articlesModels.sort((a, b) => {
             return new Date(b.date) - new Date(a.date);
         });
 
         return articlesModels;
+    },
+    websiteHomeViewModel: (website) => {
+        return {
+            name: website.name,
+            description: website.description,
+            publisher: website.publisher.email,
+        }
     }
 };

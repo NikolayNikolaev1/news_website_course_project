@@ -37,6 +37,7 @@ User.seedAdminUser = (adminEmail, adminPassword) => {
                 email: adminEmail,
                 hashedPassword: hashedPass,
                 salt: salt,
+                roles: ['admin']
             });
         }
     });

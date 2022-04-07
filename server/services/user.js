@@ -39,6 +39,10 @@ async function getUserByEmail(email) {
     return user;
 }
 
+async function getUserById(id) {
+    return await User.findById(id);
+}
+
 async function signup(email, password) {
     const user = await getUserByEmail(email);
 
@@ -54,5 +58,6 @@ module.exports = {
     create,
     getAll,
     getUserByEmail,
+    getUserById,
     signup
 }

@@ -46,6 +46,7 @@ module.exports = Object.freeze({
         DATABASE: 'mongodb'
     },
     ROUTES: {
+        ADMIN_INDEX: '/admin',
         ARTICLE_CREATE: '/:domain/article/create',
         ARTICLE_DELETE: `/:domain/article/delete/:id`,
         ARTICLE_EDIT: '/:domain/article/edit/:id',
@@ -62,6 +63,7 @@ module.exports = Object.freeze({
         WEBSITE_INDEX: '/:domain/home'
     },
     VIEWS: {
+        ADMIN_INDEX: 'admins/index',
         ARTICLE_CREATE: 'articles/create',
         ARTICLE_EDIT: 'articles/edit',
         ARTICLE_INDEX: 'articles/index',

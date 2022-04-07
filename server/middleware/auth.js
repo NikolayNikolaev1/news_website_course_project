@@ -19,11 +19,24 @@ module.exports = {
             res.redirect('/');
         }
     },
+    isInRole: (role) => {
+        return (req, res, next) => {
+            if (req.isAuthenticated() && req.user.roles.indexOf(role) > -1) {
+                next();
+            }
+            else {
+                res.redirect(ROUTES.LOGIN);
+            }
+        }
+    },
     isPublisher: (publicAccess) => {
         // Middlesware for checking if user is publisher of visited website.
         // Allows access to publisher only functionallity such as: Article Create/Edit/Delete, Website Edit/Delete etc...
         // Using for publisher buttons on navigation.
         return asyncHandler(async (req, res, next) => {
+            const domain = req.params.domain;
+            res.locals.domain = domain;
+
             if (!req.isAuthenticated()) {
                 if (publicAccess) {
                     // Public access allows none authenticated users to visit website/articles.
@@ -34,7 +47,6 @@ module.exports = {
                 res.redirect('/');
             }
 
-            const domain = req.params.domain;
             const userId = req.user._id;
 
             await isUserWebsitePublisher(domain, userId)
@@ -49,9 +61,7 @@ module.exports = {
                         res.redirect('/');
                     }
 
-                    res.locals.isPublisher = {
-                        domain
-                    };
+                    res.locals.isPublisher = true;
 
                     next();
                     return;
@@ -62,14 +72,4 @@ module.exports = {
                 });
         });
     },
-    isInRole: (role) => {
-        return (req, res, next) => {
-            if (req.isAuthenticated() && req.user.roles.indexOf(role) > -1) {
-                next();
-            }
-            else {
-                res.redirect(ROUTES.LOGIN);
-            }
-        }
-    }
 }

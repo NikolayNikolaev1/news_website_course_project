@@ -6,6 +6,7 @@ const passport = require('passport')
 const path = require('path');
 const session = require('express-session');
 const { ROUTES } = require('../utilities/constants');
+const req = require('express/lib/request');
 
 module.exports = (app, config) => {
     app.set('view engine', 'hbs');
@@ -26,6 +27,13 @@ module.exports = (app, config) => {
         if (req.user) {
             res.locals.currentUser = req.user;
         }
+
+        // hbs helper for showing content only for admins
+        handlebars.registerHelper('admin', (opts) => {
+            return req.user && req.user.roles.indexOf('admin') > -1
+                ? opts.fn(this)
+                : opts.inverse(this);
+        });
 
         next();
     });
