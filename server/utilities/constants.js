@@ -47,6 +47,8 @@ module.exports = Object.freeze({
     },
     ROUTES: {
         ADMIN_INDEX: '/admin',
+        ADMIN_WEBSITE_SUSPEND: '/admin/:domain/suspend',
+        ADMIN_WEBSITE_UNSUSPEND: '/admin/:domain/unsuspend',
         ARTICLE_CREATE: '/:domain/article/create',
         ARTICLE_DELETE: `/:domain/article/delete/:id`,
         ARTICLE_EDIT: '/:domain/article/edit/:id',

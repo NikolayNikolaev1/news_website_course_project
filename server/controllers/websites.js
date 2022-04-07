@@ -2,6 +2,7 @@ const router = require('express').Router();
 const asyncHandler = require('../utilities/async-handler');
 const { RES_ERR_TYPE, ROUTES, VIEWS } = require('../utilities/constants');
 const { isAuthenticated, isPublisher } = require('../middleware/auth');
+const { isWebsiteSuspended } = require('../middleware/restriction');
 const { renderFormError, websiteArticlesViewModel, websiteHomeViewModel } = require('../utilities/view-handler');
 const { websiteData, validate } = require('../middleware/validator');
 const websiteService = require('../services/website');
@@ -109,6 +110,7 @@ router.post(
 router.get(
     ROUTES.WEBSITE_INDEX,
     isPublisher(true),
+    isWebsiteSuspended,
     asyncHandler(async (req, res, next) => {
         const domain = req.params.domain;
 

@@ -14,6 +14,7 @@ async function create(websiteModel) {
         name: websiteModel.name,
         domain: websiteModel.domain,
         description: websiteModel.description,
+        isSuspended: false,
         publisher: websiteModel.publisherId
     });
 

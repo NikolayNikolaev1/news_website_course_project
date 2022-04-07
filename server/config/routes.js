@@ -10,6 +10,10 @@ module.exports = app => {
     app.use(controllers.users);
     app.use(controllers.websites);
 
+    app.get('/:domain/suspended', (req, res) => {
+        res.render('errors/suspended');
+    });
+
     app.all('*', (req, res) => {
         res.status(404);
         res.render(VIEWS.ERROR_404);

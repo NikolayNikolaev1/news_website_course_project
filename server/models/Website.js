@@ -21,6 +21,10 @@ const websiteSchema = new Schema({
         maxlength: [DATA_VALIDATIONS.WEBSITE_DESCRIPTION_MAX_LENGTH, DATA_ERRS.WEBSITE_DOMAIN_LENGTH_VALIDATION_MESSAGE],
         minlength: [DATA_VALIDATIONS.WEBSITE_DESCRIPTION_MIN_LENGTH, DATA_ERRS.WEBSITE_DESCRIPTION_LENGTH_VALIDATION_MESSAGE]
     },
+    isSuspended: {
+        type: Boolean,
+        require: true
+    },
     publisher: {
         type: Schema.Types.ObjectId,
         ref: 'User',

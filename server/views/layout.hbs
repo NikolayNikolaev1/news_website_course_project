@@ -34,6 +34,19 @@
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin</a>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                         <a class="dropdown-item" href="{{routes.ADMIN_INDEX}}">Panel</a>
+                        {{#if ../domain}}
+                        {{#if ../websiteRestriction}}
+                        <form action="/admin/{{../domain}}/unsuspend" id="website-unsuspend-form" method="post"></form>
+                        <a class="dropdown-item"
+                            href="javascript:document.getElementById('website-unsuspend-form').submit()">Unsuspend
+                            {{../domain}}</a>
+                        {{else}}
+                        <form action="/admin/{{../domain}}/suspend" id="website-suspend-form" method="post"></form>
+                        <a class="dropdown-item"
+                            href="javascript:document.getElementById('website-suspend-form').submit()">Suspend
+                            {{../domain}}</a>
+                        {{/if}}
+                        {{/if}}
                     </div>
                 </li>
                 {{/admin}}
