@@ -3,7 +3,7 @@ const { isPublisher, isAuthenticated } = require('../middleware/auth');
 const { articleData, validate } = require('../middleware/validator');
 const asyncHandler = require('../utilities/async-handler');
 const { ROUTES, VIEWS, RES_ERR_TYPE } = require('../utilities/constants');
-const { renderFormError, articleViewMolde } = require('../utilities/view-handler');
+const { renderFormError, articleViewModel } = require('../utilities/view-handler');
 const articleService = require('../services/article');
 const { articleServiceModel } = require('../services/handler');
 
@@ -91,11 +91,12 @@ router.post(
     validate(VIEWS.ARTICLE_EDIT),
     asyncHandler(async (req, res, next) => {
         const articleId = req.params.id;
+        const domain = req.params.domain;
         let articleModel = articleServiceModel(req.body);
 
         await articleService
             .update(articleId, articleModel)
-            .then(article => res.render(VIEWS.ARTICLE_EDIT, { model: article }))
+            .then(article => res.redirect(`/${domain}/article/${article._id}`))
             .catch(error => {
                 error.type = RES_ERR_TYPE.DATABASE;
                 next(error);
@@ -111,7 +112,7 @@ router.get(
         await articleService
             .getArticleById(articleId)
             .then(article => {
-                let articleModel = articleViewMolde(article);
+                let articleModel = articleViewModel(article);
                 res.render(VIEWS.ARTICLE_INDEX, { article: articleModel });
             })
             .catch(error => {

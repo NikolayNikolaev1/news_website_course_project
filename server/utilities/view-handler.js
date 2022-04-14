@@ -5,12 +5,16 @@ module.exports = {
         res.locals.globalError = errorMessage;
         res.render(viewPath, { model: formModel });
     },
-    articleViewMolde: (article) => {
+    articleViewModel: (article) => {
+        const videoId = getId(article.videoUrl);
+        const iframeMarkup = '<iframe width="560" height="315" src="//www.youtube.com/embed/'
+            + videoId + '" frameborder="0" allowfullscreen></iframe>';
+
         return {
             id: article._id,
             title: article.title,
             text: article.text,
-            videoUrl: article.videoUrl
+            videoId: videoId
         };
     },
     userWebsitesViewModel: (websites) => {
@@ -52,3 +56,14 @@ module.exports = {
         }
     }
 };
+
+// TODO: MOVE THIS TO UTILITIES..
+// GETS ID FROM YOUTUBE LINKGS
+function getId(url) {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+
+    return (match && match[2].length === 11)
+        ? match[2]
+        : null;
+}

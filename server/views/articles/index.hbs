@@ -1,0 +1,54 @@
+<div class="container px-4 px-lg-5">
+    <div class="gx-4 gx-lg-5 my-5">
+        <a class="btn btn-secondary btn-lg " href="/{{domain}}/home">Back to {{domain}} home</a>
+    </div>
+
+    <div class="row gx-4 gx-lg-5 my-5 " id="list-tab" role="tablist">
+        <div class="col-md-3 offset-md-3">
+            <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list"
+                href="#list-home" role="tab" aria-controls="home">Image</a>
+        </div>
+        <div class="col-md-3">
+            {{#if article.videoId}}
+            <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list"
+                href="#list-profile" role="tab" aria-controls="profile">Video</a>
+            {{else}}
+
+            <a class="list-group-item list-group-item-action btn-secondary disabled" id="list-profile-list" data-toggle="list"
+                href="#list-profile" role="tab" aria-controls="profile">Video</a>
+            {{/if}}
+        </div>
+    </div>
+    <div class="row dx-4 gx-lg-5 my-5 tab-content" id="nav-tabContent">
+        <div class="col-md-6 offset-md-3 tab-pane fade show active" id="list-home" role="tabpanel"
+            aria-labelledby="list-home-list">
+            <img class="img-fluid rounded mb-4 mb-lg-0" src="https://dummyimage.com/900x400/dee2e6/6c757d.jpg"
+                alt="...">
+        </div>
+        <div class="col-md-6 offset-md-3 tab-pane fade" id="list-profile" role="tabpanel"
+            aria-labelledby="list-profile-list">
+            <div class="embed-responsive embed-responsive-16by9">
+                <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/{{article.videoId}}?rel=0"
+                    allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row dx-4 gx-lg-5 my-5">
+        <div class="col-lg-10 offset-lg-1">
+            <h1 class="font-weight-light">{{article.title}}</h1>
+            <p>{{article.text}}</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    jQuery(".list-group-item").on('click', function () {
+        $(this).addClass("active");
+    },
+        function () {
+            $('.list-group-item').removeClass('active');
+            $(this).removeClass("active");
+        });
+</script>

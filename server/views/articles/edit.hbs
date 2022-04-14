@@ -1,10 +1,10 @@
 <div class="text-center">
-    <form action="/{{isPublisher.domain}}/article/edit/{{model.id}}" method="post" class="form-signin">
+    <form action="/{{domain}}/article/edit/{{model.id}}" method="post" class="form-signin">
         <h1 class="h3 mb-3 font-weight-normal">Edit Article</h1>
         <div class="form-group">
             <label for="title" class="sr-only">Title</label>
             <input type="text" name="title" id="title" class="form-control" placeholder="Title" required="" autofocus=""
-                value={{model.title}}>
+                value="{{model.title}}" />
         </div>
         <div class="form-group">
             <label for="video-url" class="sr-only">Video URL</label>

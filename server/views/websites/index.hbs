@@ -8,7 +8,7 @@
             <p>This is a template that is great for small businesses. It doesn't have too much fancy flare to it,
                 but it makes a great use of the standard Bootstrap core components. Feel free to use this template
                 for any project you want!</p>
-            <a class="btn btn-primary" href="#!">Call to Action!</a>
+            <a class="btn btn-secondary" href="#!">More Details!</a>
         </div>
     </div>
     <!-- Call to Action-->
@@ -30,8 +30,12 @@
                     <h2 class="card-title">{{this.title}}</h2>
                     <p class="card-text">{{this.shortText}}</p>
                 </div>
-                <div class="card-footer"><a class="btn btn-primary btn-sm"
-                        href="/{{@root.domain}}/article/{{this.id}}">More Info</a></div>
+                <div class="card-footer">
+                    <a class="btn btn-secondary btn-sm" href="/{{@root.domain}}/article/{{this.id}}">More Info</a>
+                    {{#if ../isPublisher}}
+                    <a class="btn btn-warning btn-sm" href="/{{@root.domain}}/article/edit/{{this.id}}">Edit</a>
+                    {{/if}}
+                </div>
             </div>
         </div>
         {{/each}}
