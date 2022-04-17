@@ -2,11 +2,9 @@ const controllers = require('../controllers');
 const { VIEWS } = require('../utilities/constants');
 
 module.exports = app => {
-    app.get('/', controllers.home.index);
-    app.get('/about', controllers.home.about);
-
     app.use(controllers.admins);
     app.use(controllers.articles);
+    app.use(controllers.home);
     app.use(controllers.users);
     app.use(controllers.websites);
 

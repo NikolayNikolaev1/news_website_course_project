@@ -1,21 +1,24 @@
 <div class="container px-4 px-lg-5">
     <div class="gx-4 gx-lg-5 my-5">
-        <a class="btn btn-secondary btn-lg " href="/{{domain}}/home">Back to {{domain}} home</a>
+        <a class="btn btn-secondary btn-lg float-right" href="/{{domain}}/home">Back to {{domain}} home</a>
+        {{#if isPublisher}}
+        <a class="btn btn-warning btn-lg  float-right" href="/{{domain}}/article/edit/{{article.id}}">Edit</a>
+        <a class="btn btn-danger btn-lg  float-right" href="/{{domain}}/article/delete/{{article.id}}">Delete</a>
+        {{/if}}
     </div>
 
     <div class="row gx-4 gx-lg-5 my-5 " id="list-tab" role="tablist">
-        <div class="col-md-3 offset-md-3">
+        <div class="col-md-2 offset-md-5">
             <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list"
                 href="#list-home" role="tab" aria-controls="home">Image</a>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             {{#if article.videoId}}
             <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list"
                 href="#list-profile" role="tab" aria-controls="profile">Video</a>
             {{else}}
-
-            <a class="list-group-item list-group-item-action btn-secondary disabled" id="list-profile-list" data-toggle="list"
-                href="#list-profile" role="tab" aria-controls="profile">Video</a>
+            <a class="list-group-item list-group-item-action btn-secondary disabled" id="list-profile-list"
+                data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">Video</a>
             {{/if}}
         </div>
     </div>

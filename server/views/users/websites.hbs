@@ -2,17 +2,18 @@
     <div class="row">
         {{#if websites}}
         {{#each websites}}
-        <div class="col-md-4">
-            <h2>{{this.name}}</h2>
-            <p>{{this.description}}</p>
-            <p>
 
-            <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                <a class="btn btn-small btn-secondary" href="#" role="button">View details »</a>
-                <a class="btn btn-warning" href="/{{this.domain}}/edit" role="button">Edit</a>
-                <a class="btn btn-danger" href="#" role="button">Delete</a>
+        <div class="col-md-4 mb-5">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h2 class="card-title">{{this.name}}</h2>
+                    <p class="card-text">{{this.description}}</p>
+                </div>
+                <div class="card-footer">
+                    <a class="btn btn-secondary btn-sm" href="/{{this.domain}}/home">Go to home</a>
+                    <a class="btn btn-warning btn-sm" href="/{{this.domain}}/edit" role="button">Edit</a>
+                </div>
             </div>
-            </p>
         </div>
         {{/each}}
         {{else}}

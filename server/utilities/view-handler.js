@@ -1,3 +1,4 @@
+// TODO: FIX - remove all buissness logic from this module.
 module.exports = {
     renderFormError: (res, formModel, viewPath, errorMessage) => {
         // model is for adding data from body to the form after an error.
@@ -17,6 +18,11 @@ module.exports = {
             videoId: videoId
         };
     },
+    homeViewModel: (websites) => {
+        // Returns 3 random websites for home view.
+        const shuffled = websites.sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, 3);
+    },
     userWebsitesViewModel: (websites) => {
         let websitesModels = [];
 
@@ -34,18 +40,17 @@ module.exports = {
         let articlesModels = [];
 
         articles.forEach(article => {
+            const publishecationDate = new Date(article.created_at);
+
             articlesModels.push({
                 id: article._id,
                 title: article.title,
                 shortText: article.text.substring(0, 200) + '...',
-                publicationDate: article.publicationDate
+                publicationDate: publishecationDate.getFullYear() + '-' + publishecationDate.getMonth() + '-' + publishecationDate.getDay()
             });
         });
 
-        articlesModels.sort((a, b) => {
-            return new Date(b.date) - new Date(a.date);
-        });
-
+        articlesModels.sort((a, b) => a.publicationDate.localeCompare(b.publicationDate)); // TODO FIX
         return articlesModels;
     },
     websiteHomeViewModel: (website) => {

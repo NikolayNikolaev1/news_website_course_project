@@ -1,5 +1,5 @@
 <div class="text-center">
-    <form action="/{{isPublisher.domain}}/article/create" method="post" class="form-signin">
+    <form action="/{{domain}}/article/create" method="post" class="form-signin">
         <h1 class="h3 mb-3 font-weight-normal">Create Article</h1>
         <div class="form-group">
             <label for="title" class="sr-only">Title</label>
@@ -10,6 +10,9 @@
             <label for="video-url" class="sr-only">Video URL</label>
             <input type="text" name="videoUrl" id="video-url" class="form-control" placeholder="Video Url"
                 value={{model.videoUrl}}>
+        </div>
+        <div class="form-group">
+            <input type="file" name="image" /><br /><br />
         </div>
         <div class="form-group">
             <label for="text" class="sr-only">Text</label>

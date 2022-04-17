@@ -1,19 +1,19 @@
 <div class="container px-4 px-lg-5">
     <!-- Heading Row-->
+    {{#if website.articles}}
     <div class="row gx-4 gx-lg-5 align-items-center my-5">
         <div class="col-lg-7"><img class="img-fluid rounded mb-4 mb-lg-0"
                 src="https://dummyimage.com/900x400/dee2e6/6c757d.jpg" alt="..."></div>
         <div class="col-lg-5">
-            <h1 class="font-weight-light">Business Name or Tagline</h1>
-            <p>This is a template that is great for small businesses. It doesn't have too much fancy flare to it,
-                but it makes a great use of the standard Bootstrap core components. Feel free to use this template
-                for any project you want!</p>
-            <a class="btn btn-secondary" href="#!">More Details!</a>
+            <h1 class="font-weight-light">{{website.articles.0.title}}</h1>
+            <p>{{website.articles.0.shortText}}</p>
+            <a class="btn btn-secondary" href="/{{domain}}/article/{{website.articles.0.id}}">More Details!</a>
         </div>
     </div>
+    {{/if}}
     <!-- Call to Action-->
     <div class="card text-white bg-secondary my-5 py-4 text-center">
-        <h3>Website Publisher: Contact -
+        <h3 class="bg-dark">Website Publisher: Contact -
             <a href="mailto: {{website.publisher}}">{{website.publisher}}</a>
         </h3>
         <div class="card-body">
@@ -22,6 +22,7 @@
     </div>
 
     <!-- Content Row-->
+    {{#if website.articles}}
     <div class="row gx-4 gx-lg-5">
         {{#each website.articles}}
         <div class="col-md-4 mb-5">
@@ -35,9 +36,13 @@
                     {{#if ../isPublisher}}
                     <a class="btn btn-warning btn-sm" href="/{{@root.domain}}/article/edit/{{this.id}}">Edit</a>
                     {{/if}}
+                    <p class="card-text float-right">{{this.publicationDate}}</p>
                 </div>
             </div>
         </div>
         {{/each}}
     </div>
+    {{else}}
+    <h1 class="offset-2">There are not articles in this website yet!</h1>
+    {{/if}}
 </div>

@@ -17,7 +17,7 @@ const userSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Website'
     }]
-});
+}, { timestamps: { createdAt: 'created_at' } });
 
 userSchema.method({
     authenticate: function (password) {

@@ -11,14 +11,12 @@ async function create(articleModel) {
     }
 
     const date = new Date();
-    const currentDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
 
     const article = new Article({
         title: articleModel.title,
         text: articleModel.text,
         videoUrl: articleModel.videoUrl,
-        website: website._id,
-        publicationDate: currentDate
+        website: website._id
     });
 
     await article.save();

@@ -34,7 +34,7 @@ const websiteSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Article'
     }]
-});
+}, { timestamps: { createdAt: 'created_at' } });
 
 const Website = model('Website', websiteSchema);
 

@@ -22,11 +22,7 @@ const articleSchema = new Schema({
         ref: 'Website',
         required: true
     },
-    publicationDate: {
-        type: String,
-        required: true
-    }
-});
+}, { timestamps: { createdAt: 'created_at' } });
 
 const Article = model('Article', articleSchema);
 

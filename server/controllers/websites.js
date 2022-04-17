@@ -133,7 +133,6 @@ router.get(
                 next(error);
             });
 
-
         res.render(VIEWS.WEBSITE_INDEX, { website: websiteModel })
     }));
 
