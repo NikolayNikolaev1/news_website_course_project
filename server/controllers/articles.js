@@ -1,6 +1,9 @@
 const router = require('express').Router();
+const path = require('path');
+const Resize = require('../utilities/Resize');
 const { isPublisher, isAuthenticated } = require('../middleware/auth');
 const { isWebsiteSuspended } = require('../middleware/restriction');
+const upload = require('../middleware/upload')
 const { articleData, validate } = require('../middleware/validator');
 const asyncHandler = require('../utilities/async-handler');
 const { ROUTES, VIEWS, RES_ERR_TYPE } = require('../utilities/constants');
@@ -34,7 +37,7 @@ router.post(
                 if (error.isExpected) {
                     return renderFormError(
                         res,
-                        websiteModel,
+                        articleModel,
                         VIEWS.ARTICLE_CREATE,
                         error.message);
                 }
@@ -82,12 +85,22 @@ router.post(
     ROUTES.ARTICLE_EDIT,
     isAuthenticated,
     isPublisher(false),
+    upload.single('image'),
     articleData(),
     validate(VIEWS.ARTICLE_EDIT),
     asyncHandler(async (req, res, next) => {
         const articleId = req.params.id;
         const domain = req.params.domain;
         let articleModel = articleServiceModel(req.body);
+
+        let rootPath = path.normalize(path.join(__dirname, '/../../'));
+        const imagePath = path.join(rootPath, './public/images');
+        const fileUpload = new Resize(imagePath);
+
+        if (req.file) {
+            const filename = await fileUpload.save(req.file.buffer);
+            articleModel.imageName = filename;
+        }
 
         await articleService
             .update(articleId, articleModel)
@@ -112,14 +125,6 @@ router.get(
                 res.render(VIEWS.ARTICLE_INDEX, { article: articleModel });
             })
             .catch(error => {
-                if (error.isExpected) {
-                    return renderFormError(
-                        res,
-                        websiteModel,
-                        VIEWS.ARTICLE_CREATE,
-                        error.message);
-                }
-
                 error.type = RES_ERR_TYPE.DATABASE;
                 next(error);
             });

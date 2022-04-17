@@ -92,7 +92,6 @@ router.post(
 
         await websiteService
             .updateByDomain(domain, websiteModel)
-            .then(website => res.render(VIEWS.WEBSITE_EDIT, { model: website }))
             .catch(error => {
                 if (error.isExpected) {
                     return renderFormError(
@@ -105,6 +104,8 @@ router.post(
                 error.type = RES_ERR_TYPE.DATABASE;
                 next(error);
             });
+
+        res.redirect(`/${domain}/home`)
     }));
 
 router.get(

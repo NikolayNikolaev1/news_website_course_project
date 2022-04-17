@@ -1,28 +1,15 @@
-{{!-- <form action={{routes.WEBSITE_EDIT}} method="post">
-    <label for="name">Name: </label>
-    <br>
-    <input type="text" name="name" id="name" value={{model.name}}>
-    <br>
-    <label for="domain">Domain: </label>
-    <br>
-    <input type="text" name="domain" id="domain" value={{model.domain}}>
-    <br>
-    <input type="submit" value="Edit Website" />
-</form> --}}
-
-
 <div class="text-center">
     <form action="/{{model.domain}}/edit" method="post" class="form-signin">
         <h1 class="h3 mb-3 font-weight-normal">Edit Website</h1>
         <div class="form-group">
             <label for="name" class="sr-only">Title</label>
             <input type="text" name="name" id="name" class="form-control" placeholder="Name" required="" autofocus=""
-                value={{model.name}}>
+                value="{{model.name}}">
         </div>
         <div class="form-group">
             <label for="domain" class="sr-only">Domain</label>
             <input type="text" name="domain" id="domain" class="form-control" placeholder="Domain" required=""
-                value={{model.domain}}>
+                value="{{model.domain}}">
         </div>
         <div class="form-group">
             <label for="description" class="sr-only">Description</label>

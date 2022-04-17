@@ -15,6 +15,7 @@ async function create(articleModel) {
     const article = new Article({
         title: articleModel.title,
         text: articleModel.text,
+        imageName: articleModel.imageName,
         videoUrl: articleModel.videoUrl,
         website: website._id
     });
@@ -55,6 +56,7 @@ async function update(id, articleModel) {
     article.title = articleModel.title;
     article.text = articleModel.text;
     article.videoUrl = articleModel.videoUrl;
+    article.imageName = articleModel.imageName;
 
     await article.save();
     return article;

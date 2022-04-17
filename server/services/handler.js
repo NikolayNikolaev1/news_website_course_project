@@ -1,6 +1,7 @@
 module.exports = {
     articleServiceModel: (article) => {
         return {
+            id: article._id,
             title: article.title,
             text: article.text,
             videoUrl: article.videoUrl

@@ -15,6 +15,7 @@ module.exports = {
             id: article._id,
             title: article.title,
             text: article.text,
+            imageName: article.imageName,
             videoId: videoId
         };
     },

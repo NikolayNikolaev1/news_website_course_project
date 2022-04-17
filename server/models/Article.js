@@ -14,6 +14,10 @@ const articleSchema = new Schema({
         maxlength: [DATA_VALIDATIONS.ARTICLE_TEXT_MAX_LENGTH, DATA_ERRS.ARTICLE_TEXT_LENGTH_VALIDATION_MESSAGE],
         minlength: [DATA_VALIDATIONS.ARTICLE_TEXT_MIN_LENGTH, DATA_ERRS.ARTICLE_TEXT_LENGTH_VALIDATION_MESSAGE]
     },
+    imageName: {
+        type: String,
+        default: 'default.png'
+    },
     videoUrl: {
         type: String,
     },
