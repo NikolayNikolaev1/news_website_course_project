@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const { isPublisher, isAuthenticated } = require('../middleware/auth');
+const { isWebsiteSuspended } = require('../middleware/restriction');
 const { articleData, validate } = require('../middleware/validator');
 const asyncHandler = require('../utilities/async-handler');
 const { ROUTES, VIEWS, RES_ERR_TYPE } = require('../utilities/constants');
@@ -48,23 +49,17 @@ router.post(
     isAuthenticated,
     isPublisher(false),
     asyncHandler(async (req, res, next) => {
+        const domain = req.params.domain;
         const articleId = req.params.id;
 
         await articleService
             .deleteById(articleId)
-            .then(res.redirect('/'))
             .catch(error => {
-                if (error.isExpected) {
-                    return renderFormError(
-                        res,
-                        websiteModel,
-                        VIEWS.ARTICLE_CREATE,
-                        error.message);
-                }
-
                 error.type = RES_ERR_TYPE.DATABASE;
                 next(error);
             });
+
+        res.redirect(`/${domain}/home`)
     }));
 
 router.get(
@@ -106,6 +101,7 @@ router.post(
 router.get(
     ROUTES.ARTICLE_INDEX,
     isPublisher(true),
+    isWebsiteSuspended,
     asyncHandler(async (req, res, next) => {
         const articleId = req.params.id;
 

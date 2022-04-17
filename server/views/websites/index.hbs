@@ -35,6 +35,12 @@
                     <a class="btn btn-secondary btn-sm" href="/{{@root.domain}}/article/{{this.id}}">More Info</a>
                     {{#if ../isPublisher}}
                     <a class="btn btn-warning btn-sm" href="/{{@root.domain}}/article/edit/{{this.id}}">Edit</a>
+                    <button type="button" class="btn btn-danger btn-sm" data-title="{{this.title}}" data-toggle="modal"
+                        data-target="#deleteModal">
+                        Delete
+                    </button>
+                    <form action="/{{@root.domain}}/article/delete/{{this.id}}" id="delete-article" method="post">
+                    </form>
                     {{/if}}
                     <p class="card-text float-right">{{this.publicationDate}}</p>
                 </div>
@@ -46,3 +52,37 @@
     <h1 class="offset-2">There are not articles in this website yet!</h1>
     {{/if}}
 </div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete Article</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure that you want do delete this article? You can not unchange that after you confirm!
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger" method="POST"
+                    href="javascript:document.getElementById('delete-article').submit()">Confrim</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#deleteModal').on('show.bs.modal', function (event) {
+        let button = $(event.relatedTarget) // Button that triggered the modal
+        let title = button.data('title') // Extract info from data-* attributes
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        let modal = $(this)
+        modal.find('.modal-title').text('Delete Article - ' + title)
+        modal.find('.modal-body input').val(title)
+    })
+</script>

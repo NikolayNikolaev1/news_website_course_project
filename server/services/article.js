@@ -30,9 +30,9 @@ async function create(articleModel) {
 async function deleteById(id) {
     const deletedCount = await Article.deleteOne({ _id: id });
 
-    if (deletedCount !== 0) {
-        throwExpectedServiceError(GLOBAL_ERRS.ARTICLE_NOT_EXISTS);
-    }
+    // if (deletedCount !== 0) {
+    //     throwExpectedServiceError(GLOBAL_ERRS.ARTICLE_NOT_EXISTS);
+    // }
 }
 
 async function getAll() {

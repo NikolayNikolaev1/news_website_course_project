@@ -1,10 +1,14 @@
 <div class="container px-4 px-lg-5">
     <div class="gx-4 gx-lg-5 my-5">
-        <a class="btn btn-secondary btn-lg float-right" href="/{{domain}}/home">Back to {{domain}} home</a>
+        <a class="btn btn-secondary btn.sm float-right" href="/{{domain}}/home">Back to {{domain}} home</a>
         {{#if isPublisher}}
-        <a class="btn btn-warning btn-lg  float-right" href="/{{domain}}/article/edit/{{article.id}}">Edit</a>
-        <a class="btn btn-danger btn-lg  float-right" href="/{{domain}}/article/delete/{{article.id}}">Delete</a>
-        {{/if}}
+        <a class="btn btn-warning btn-sm float-right" href="/{{domain}}/article/edit/{{article.id}}">Edit</a>
+        <button type="button" class="btn btn-danger btn-sm float-right" data-title="{{this.title}}" data-toggle="modal"
+            data-target="#deleteModal">
+            Delete
+        </button>
+        <form action="/{{domain}}/article/delete/{{article.id}}" id="delete-article" method="post">
+            {{/if}}
     </div>
 
     <div class="row gx-4 gx-lg-5 my-5 " id="list-tab" role="tablist">
@@ -46,6 +50,29 @@
     </div>
 </div>
 
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete Article</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure that you want do delete this article? You can not unchange that after you confirm!
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger" method="POST"
+                    href="javascript:document.getElementById('delete-article').submit()">Confrim</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script>
     jQuery(".list-group-item").on('click', function () {
         $(this).addClass("active");
@@ -54,4 +81,15 @@
             $('.list-group-item').removeClass('active');
             $(this).removeClass("active");
         });
+</script>
+<script>
+    $('#deleteModal').on('show.bs.modal', function (event) {
+        let button = $(event.relatedTarget) // Button that triggered the modal
+        let title = button.data('title') // Extract info from data-* attributes
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        let modal = $(this)
+        modal.find('.modal-title').text('Delete Article - ' + title)
+        modal.find('.modal-body input').val(title)
+    })
 </script>
