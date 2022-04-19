@@ -31,7 +31,7 @@ module.exports = {
             websitesModels.push({
                 name: website.name,
                 domain: website.domain,
-                description: website.description
+                shortDescription: website.description.substring(0, 200) + '...',
             });
         });
 
@@ -46,12 +46,20 @@ module.exports = {
             articlesModels.push({
                 id: article._id,
                 title: article.title,
+                imageName: article.imageName,
                 shortText: article.text.substring(0, 200) + '...',
-                publicationDate: publishecationDate.getFullYear() + '-' + publishecationDate.getMonth() + '-' + publishecationDate.getDay()
+                publicationDate: publishecationDate.getFullYear() + '-' + (parseInt(publishecationDate.getMonth()) + 1) + '-' + publishecationDate.getDate(),
+                time: publishecationDate.getHours() + ":"
+                    + publishecationDate.getMinutes() + ":"
+                    + publishecationDate.getSeconds()
             });
+
         });
 
-        articlesModels.sort((a, b) => a.publicationDate.localeCompare(b.publicationDate)); // TODO FIX
+
+        articlesModels
+        .sort((a, b) => a.publicationDate.localeCompare(b.publicationDate))
+        .sort((b, a) => a.time.localeCompare(b.time));
         return articlesModels;
     },
     websiteHomeViewModel: (website) => {

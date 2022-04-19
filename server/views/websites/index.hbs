@@ -1,49 +1,63 @@
 <div class="container px-4 px-lg-5">
     <!-- Heading Row-->
     {{#if website.articles}}
-    <div class="row gx-4 gx-lg-5 align-items-center my-5">
-        <div class="col-lg-7"><img class="img-fluid rounded mb-4 mb-lg-0"
-                src="https://dummyimage.com/900x400/dee2e6/6c757d.jpg" alt="..."></div>
-        <div class="col-lg-5">
-            <h1 class="font-weight-light">{{website.articles.0.title}}</h1>
-            <p>{{website.articles.0.shortText}}</p>
-            <a class="btn btn-secondary" href="/{{domain}}/article/{{website.articles.0.id}}">More Details!</a>
+    <div class="card float-right pb-3">
+        <div class="card-header text-center">
+            <h1>Latest Article</h1>
+        </div>
+        <div class="row">
+            <div class="col-sm-5">
+                <img class="d-block w-100" src="../../../images/{{website.articles.0.imageName}}"
+                    alt="{{website.articles.0.title}}">
+            </div>
+            <div class="col-sm-7">
+                <div class="card-block">
+                    <h4 class="card-title">{{website.articles.0.title}}</h4>
+                    <p>{{website.articles.0.shortText}}</p>
+                    <br>
+
+                    <a href="/{{domain}}/article/{{website.articles.0.id}}"
+                        class="btn btn-outline-secondary btn-sm">Read More</a>
+                </div>
+            </div>
+
         </div>
     </div>
     {{/if}}
     <!-- Call to Action-->
-    <div class="card text-white bg-secondary my-5 py-4 text-center">
+    <div class="card text-white bg-secondary my-5 pt-4 text-center">
         <h2 class="card-title">Welcome to {{website.name}}</h2>
         <div class="card-body">
             <p class="text-white m-0">{{website.description}}</p>
         </div>
-        <h5 class="bg-dark">Website Publisher: Contact -
+        <h5 class="bg-dark card-footer mb-0">Website Publisher: Contact -
             <a href="mailto: {{website.publisher}}">{{website.publisher}}</a>
         </h5>
     </div>
 
     <!-- Content Row-->
     {{#if website.articles}}
+    <h3 class="text-center">All Articles</h3>
     <div class="row gx-4 gx-lg-5">
         {{#each website.articles}}
-        <div class="col-md-4 mb-5">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h2 class="card-title">{{this.title}}</h2>
+        <div class="col-lg-4 mb-4 d-flex align-items-stretch">
+            <div class="card">
+                <img src="../../../images/{{this.imageName}}" alt="{{this.title}}" class=" card-img-top">
+                <div class="card-body d-flex align-content-around flex-wrap">
+                    <h5 class="card-title">{{this.title}}</h5>
                     <p class="card-text">{{this.shortText}}</p>
-                </div>
-                <div class="card-footer">
-                    <a class="btn btn-secondary btn-sm" href="/{{@root.domain}}/article/{{this.id}}">More Info</a>
+                    <a href="/{{@root.domain}}/article/{{this.id}}" class="btn btn-outline-secondary btn-sm">Read
+                        More</a>
                     {{#if ../isPublisher}}
-                    <a class="btn btn-warning btn-sm" href="/{{@root.domain}}/article/edit/{{this.id}}">Edit</a>
-                    <button type="button" class="btn btn-danger btn-sm" data-title="{{this.title}}" data-toggle="modal"
-                        data-target="#deleteModal">
-                        Delete
-                    </button>
+
+                    <a href="/{{@root.domain}}/article/edit/{{this.id}}" class="btn btn-outline-warning btn-sm mx-2">Edit</a>
+                    <a href="/{{@root.domain}}/article/edit/{{this.id}}" class="btn btn-outline-danger btn-sm"
+                        data-title="{{this.title}}" data-toggle="modal" data-target="#deleteModal">Delete</a>
                     <form action="/{{@root.domain}}/article/delete/{{this.id}}" id="delete-article" method="post">
                     </form>
                     {{/if}}
-                    <p class="card-text float-right">{{this.publicationDate}}</p>
+
+                    <p class="card-text ml-auto">{{this.publicationDate}}</p>
                 </div>
             </div>
         </div>

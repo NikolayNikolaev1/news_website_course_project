@@ -25,7 +25,7 @@ router.post(
 
         await websiteService
             .create(websiteModel)
-            .then(website => res.redirect(`/website/${website.domain}`))
+            .then(website => res.redirect(`/${website.domain}/home`))
             .catch(error => {
                 if (error.isExpected) {
                     return renderFormError(

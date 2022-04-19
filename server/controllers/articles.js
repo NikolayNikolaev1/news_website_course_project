@@ -23,12 +23,22 @@ router.post(
     ROUTES.ARTICLE_CREATE,
     isAuthenticated,
     isPublisher(false),
+    upload.single('image'),
     articleData(),
     validate(VIEWS.ARTICLE_CREATE),
     asyncHandler(async (req, res, next) => {
         let articleModel = articleServiceModel(req.body);
         const domain = req.params.domain;
         articleModel.websiteDomain = domain;
+        
+        let rootPath = path.normalize(path.join(__dirname, '/../../'));
+        const imagePath = path.join(rootPath, './public/images');
+        const fileUpload = new Resize(imagePath);
+
+        if (req.file) {
+            const filename = await fileUpload.save(req.file.buffer);
+            articleModel.imageName = filename;
+        }
 
         await articleService
             .create(articleModel)

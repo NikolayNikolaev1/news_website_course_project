@@ -1,31 +1,20 @@
-{{!-- <form action={{routes.WEBSITE_CREATE}} method="post">
-    <label for="name">Name: </label>
-    <br>
-    <input type="text" name="name" id="name" value={{model.name}}>
-    <br>
-    <label for="domain">Domain: </label>
-    <br>
-    <input type="text" name="domain" id="domain" value={{model.domain}}>
-    <br>
-    <input type="submit" value="Create Website" />
-</form> --}}
-
 <div class="text-center">
     <form action={{routes.WEBSITE_CREATE}} method="post" class="form-signin">
+        <img class="mb-4" src="../../../images/logo.png" alt="" width="72" height="72">
         <h1 class="h3 mb-3 font-weight-normal">Create Website</h1>
         <div class="form-group">
             <label for="name" class="sr-only">Name</label>
             <input type="text" name="name" id="name" class="form-control" placeholder="Name" required="" autofocus=""
-                value={{model.name}}>
+                value="{{model.name}}">
         </div>
         <div class="form-group">
             <label for="domain" class="sr-only">Domain</label>
             <input type="text" name="domain" id="domain" class="form-control" placeholder="Domain" required=""
-                value={{model.domain}}>
+                value="{{model.domain}}">
         </div>
         <div class="form-group">
             <label for="description" class="sr-only">Description</label>
-            <textarea name="description" id="description" class="form-control" placeholder="Description"
+            <textarea name="description" id="description" class="form-control" placeholder="Description" cols="50"
                 required="">{{model.description}}</textarea>
         </div>
         <hr>

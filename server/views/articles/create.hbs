@@ -1,15 +1,15 @@
 <div class="text-center">
-    <form action="/{{domain}}/article/create" method="post" class="form-signin">
+    <form action="/{{domain}}/article/create" method="post" class="form-signin" enctype="multipart/form-data">
         <h1 class="h3 mb-3 font-weight-normal">Create Article</h1>
         <div class="form-group">
             <label for="title" class="sr-only">Title</label>
             <input type="text" name="title" id="title" class="form-control" placeholder="Title" required="" autofocus=""
-                value={{model.title}}>
+                value="{{model.title}}">
         </div>
         <div class="form-group">
             <label for="video-url" class="sr-only">Video URL</label>
             <input type="text" name="videoUrl" id="video-url" class="form-control" placeholder="Video Url"
-                value={{model.videoUrl}}>
+                value="{{model.videoUrl}}">
         </div>
         <div class="form-group">
             <input type="file" name="image" /><br /><br />
